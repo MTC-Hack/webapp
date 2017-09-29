@@ -1,0 +1,287 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="index.html">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Автоматизированная система контроля неисправностей автомобилей</title>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,‌​100italic,300,300ita‌​lic,400italic,500,50‌​0italic,700,700itali‌​c,900italic,900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="author" href="humans.txt">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">АСКНА</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">О системе<span class="sr-only">(current)</span></a></li>
+                    
+                    <li><a href="#">Наши клиенты</a></li>
+
+                    <li><a href="#">Как это работает</a></li>
+
+                    <li><a href="#">Где установить</a></li>
+
+                    <li><a href="#">Контакты</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Войти</b> <span class="caret"></span></a>
+                        <ul id="login-dp" class="dropdown-menu">
+                            <li>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <form class="form" role="form" method="post" action="#" accept-charset="UTF-8" id="login-nav">
+                                            <div class="form-group">
+                                                <label class="sr-only" for="login">Логин</label>
+                                                <input type="text" class="form-control" name="login" id="login" placeholder="Логин" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="sr-only" for="password">Пароль</label>
+                                                <input type="password" class="form-control" name="password" id="password" placeholder="Пароль" required>
+                                                <div class="help-block text-right"><a href="">Забыли пароль ?</a></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" id="loginButton" class="btn btn-primary btn-block">Войти</button>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox"> <p class="normalize">запомнить меня</p>
+                                                </label>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="bottom text-center">
+                                        Еще не зарегистрированы? <a href="#"><b>Регистрация</b></a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="row slider-block">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                    <img src="img/slide1.jpg" alt="">
+                    <div class="carousel-caption">
+                        <div class="container-fluid capt">
+                            <div class="h3">
+                                Преимущества налицо
+                            </div>
+                            <p>Больше не нужно искать автосервис для ремонта личного автомобиля. Теперь автосервис сам может предлагать Вам ремонт, в зависимости от ваших неисправностей.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <img src="img/slide2.jpg" alt="">
+                    <div class="carousel-caption">
+                        <div class="container-fluid capt">
+                            <div class="h3">
+                                Гарантия не слетает
+                            </div>
+                            <p>Как как оборудования телеметрии устанавливается без нарушений целостности бортовой сети, гарантия выданная официальным диллером остается у вас без ограничений.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 plus-block plus-block">
+                <img src="img/plus1.png" alt="" class="center-block">
+                <div class="h4 heading">
+                    Конфиденциальность
+                </div>
+                <p class="description center-block text-justify">
+                    Так как наш программно-аппаратный комплекс собирает телеметрическую информацию - важно, что бы эта информация не попала в руки к злоумышленнику. Все получаемая и передаваемая информация защифрована симметричным шифрованием AES на физическом уровне передачи и собственным алгоритмом на программном уровне.
+                </p>
+            </div>
+            <div class="col-lg-4 plus-block">
+                <img src="img/plus2.png" alt="" class="center-block">
+                <div class="h4 heading">
+                    Безопасность
+                </div>
+                <p class="description center-block text-justify">
+                    При установки оборудования в Ваш автомобиль не появляется слабых мест, которыми могут воспользоваться автоугонщики. Данная аппаратура работает только на передачу информации, но не на прием и как следствие получить доступ к алгоритму работы устройства невозможно. Так же сам алгоритм рабоы не затрагивает системы безопасности автомобиля и следовательно не возникает слабых мест.
+                </p>
+            </div>
+            <div class="col-lg-4 plus-block">
+                <img src="img/plus3.png" alt="" class="center-block">
+                <div class="h4 heading">
+                    Гарантийность
+                </div>
+                <p class="description center-block text-justify">
+                    Аппаратное устройство установленное в автомобиль не требует изменений в проводке автомобиля, что позволяет не слететь с гарантии автодиллера. Для получения телеметрической информации используется специальный разъем, который имеется практически во всех современных автомобилях.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="h1">
+                    Для автомобилистов
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container well">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="h2">
+                    <p>Как подключиться к системе?</p>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <div class="col-lg-3"><img src="img/1.png" alt="" class="number"></div>
+                            <div class="col-lg-9">
+                                <p class="punkt">Убедиться, что Ваш автомобиль входит в список поддерживаемых системой АСКНА</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <div class="col-lg-3"><img src="img/2.png" alt="" class="number"></div>
+                            <div class="col-lg-9">
+                                <p class="punkt">Подать заявку на установку в один из авторизованных сервисов по установки АСКНА</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <div class="col-lg-3"><img src="img/3.png" alt="" class="number"></div>
+                            <div class="col-lg-9">
+                                <p class="punkt">Приехать в авторизованный сервис и установить систему АСКНА на Ваш автомобиль. Готово!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <button class="btn btn-primary pull-left">Оставить заявку</button>
+                        <button class="btn btn-default pull-right">Узнать подробнее...</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container well">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="h2">
+                    <p>Основные преимущества</p>
+                </div>
+                <div class="row">
+                    <ul class="list-unstyled props">
+                    	<li><img src="img/ok.png" class="ok" alt="">Более не требуется наблюдать за состоянием автомобиля и гадать, что же случилось</li>
+                    	<li><img src="img/ok.png" class="ok" alt="">Не нужно искать автосервис для ремонта</li>
+                    	<li><img src="img/ok.png" class="ok" alt="">Есть возможность быстро выбрать лучшее предложение от автосервиса</li>
+                    	<li><img src="img/ok.png" class="ok" alt="">Нет абонентской платы</li>
+                    	<li><img src="img/ok.png" class="ok" alt="">Не приводит к потере гарантии</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="h1">
+                    Для автосервисов
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container well">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="h2">
+                    <p>Как подключиться к системе?</p>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <div class="col-lg-3"><img src="img/1.png" alt="" class="number"></div>
+                            <div class="col-lg-9">
+                                <p class="punkt">Определить список услуг, которые Ваш автосервис предоставляет для автовладельцев.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <div class="col-lg-3"><img src="img/2.png" alt="" class="number"></div>
+                            <div class="col-lg-9">
+                                <p class="punkt">Подать заявку на нашем сайте для получения полной информации о вашей деятельности. В течении 3х рабочих дней заявка будет рассмотрена.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <div class="col-lg-3"><img src="img/3.png" alt="" class="number"></div>
+                            <div class="col-lg-9">
+                                <p class="punkt">После получения положительного ответа вы будете подключены к системе АСКНА и сможете получать информацию по Вашему профилю. Певый месяц пользования бесплатный. Каждый последующий месяц тарифицируется по фиксированному тарифу.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <button class="btn btn-primary pull-left">Оставить заявку</button>
+                        <button class="btn btn-default pull-right">Узнать подробнее...</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container well">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="h2">
+                    <p>Основные преимущества</p>
+                </div>
+                <div class="row">
+                    <ul class="list-unstyled props">
+                    	<li><img src="img/ok.png" class="ok" alt="">Сокращение затрат на рекламу за счет автоматизированности получения клиентов</li>
+                    	<li><img src="img/ok.png" class="ok" alt="">Простое подключение к системе</li>
+                    	<li><img src="img/ok.png" class="ok" alt="">Дополнительный поток клиентов</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container-fluid">
+            <div class="panel-footer">
+                <p class="copy">&copy; Евсеев Артем 2017г.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

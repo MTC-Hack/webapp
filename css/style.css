@@ -1,0 +1,144 @@
+﻿body{
+    background: #fcfcfc;
+    color: #444;
+}
+
+#login-dp {
+    min-width: 250px;
+    padding: 14px 14px 0;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 1);
+}
+
+#login-dp .help-block {
+    font-size: 12px
+}
+
+#login-dp .bottom {
+    background-color: rgba(255, 255, 255, 1);
+    border-top: 1px solid #ddd;
+    clear: both;
+    padding: 14px;
+}
+
+#login-dp .social-buttons {
+    margin: 12px 0
+}
+
+#login-dp .social-buttons a {
+    width: 49%;
+}
+
+#login-dp .form-group {
+    margin-bottom: 10px;
+}
+
+.btn-fb {
+    color: #fff;
+    background-color: #3b5998;
+}
+
+.btn-fb:hover {
+    color: #fff;
+    background-color: #496ebc
+}
+
+.btn-tw {
+    color: #fff;
+    background-color: #55acee;
+}
+
+.btn-tw:hover {
+    color: #fff;
+    background-color: #59b5fa;
+}
+
+.slider-block {
+    margin-top: -20px;
+    margin-right: 0px;
+}
+
+.capt {
+    text-align: left;
+    background: rgba(255, 255, 255, 0.7);
+    color: #333;
+    font-family: 'Roboto';
+    border-radius: 10px;
+}
+
+.plus-block {
+    margin-top: 30px;
+    padding: 10px;
+}
+
+.plus-block > .description{
+    width: 80%;
+}
+
+.heading{
+    margin: 20px auto;
+    text-align: center;
+}
+
+.number{
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.punkt{
+    padding: 10px;
+}
+
+.props{
+    margin-left: 20px;
+    font-size: 16px;
+    font-style: italic;
+    color: #000;
+}
+
+.props > li{
+    background: #f1f1f1;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.ok{
+    margin-right: 20px;
+    width: 25px;
+}
+
+.copy{
+    text-align: center;
+}
+
+.user-img{
+    height: 50px;
+}
+
+.login-block > p{
+    text-align: center;
+}
+
+.data{
+    margin-right: 0px;
+}
+
+.tab-pane{
+    padding-top: 20px;
+}
+
+.auto-img{
+    width: 100%;
+}
+@media(max-width:768px) {
+    #login-dp {
+        background-color: inherit;
+        color: #444;
+    }
+    #login-dp .bottom {
+        background-color: inherit;
+        border-top: 0 none;
+    }
+}

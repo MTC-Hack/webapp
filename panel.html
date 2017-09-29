@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="index.html">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>РосАвтоТелеметрия</title>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,‌​100italic,300,300ita‌​lic,400italic,500,50‌​0italic,700,700itali‌​c,900italic,900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="author" href="humans.txt">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">РосАвтоТелеметрия</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Главная<span class="sr-only">(current)</span></a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Профиль <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Мои автомобили</a></li>
+                            <li><a href="#">Личные данные</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Настройки</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Поломки</a></li>
+                    <li><a href="#">Заявки на ремонт</a></li>
+                    <li><a href="#">Помощь</a></li>
+                </ul>
+                <img src="img/user-default.png" class="user-img nav navbar-nav navbar-right" alt="">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="forServiceName">Артем Евсеев</b> <span class="caret"></span></a>
+                        <ul id="login-dp" class="dropdown-menu">
+                            <li>
+                                <div class="row">
+                                    <div class="col-md-12 login-block">
+                                        <img src="img/user-default.png" class="center-block" alt="">
+                                        <p class="h4 forServiceName">Service Name</p>
+                                        <ul class="list-group">
+                                            <li class="list-group-item">
+                                                <span class="badge">14</span><a href="#">Сообщения</a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <a href="#" data-toggle="modal" data-target="#myModal">Информация</a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <a href="#">Настройки</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="bottom text-center">
+                                        <a href="./index.html"><b>Выйти</b></a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Информация об автосервисе</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="service_info"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="h3">Автомобили в ремонте</div>
+                <ul class="list-group" id="own-cars-list"></ul>
+            </div>
+            <div class="col-lg-9">
+                <div class="h3" style="margin: 15px 15px 15px 15px;">Список автомобилей</div>
+                <div class="panel panel-default" style="margin: 0px 15px 15px 15px;">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">Автомобили с неисправностями</div>
+                    <div class="panel-body">
+                        <p>В данном списке указаны автомобили, которые в данный момент нуждаются в ремонте и их владльца согласны на получение предложений от автосервисов.</p>
+                    </div>
+                </div>
+                <div id="lists_of_vehicles"></div>
+                <div class="modal fade" id="popup_vehicleInfo" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+                    <div class="modal-dialog modal-lg" style="width: 90% !important;" role="document">
+                        <div class="modal-content"></div>
+                    </div>
+                </div>
+                <div class="modal fade" id="popup_vehicleRepairOffer" tabindex="-1" role="dialog" aria-labelledby="modalLabelOffer">
+                    <div class="modal-dialog modal-lg" style="width: 60% !important;" role="document">
+                        <div class="modal-content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container-fluid">
+            <div class="panel-footer">
+                <p class="copy">&copy; РосАвтоТелеметрия 2017г.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="./js/main.js"></script>
+</body>
+
+</html>
+
+                 
