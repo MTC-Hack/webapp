@@ -6,10 +6,22 @@ var CREATE_OFFER = "create_offer";
 var GET_OFFERS = "get_offers";
 var GET_USER_BY_VEH = "user_by_vehicle";
 
+if(window.location.href.indexOf("panel") >= 0){
+    if(!localStorage.getItem('data')){
+        window.location.href = './index.html';
+    }
+}
+
+function logout(){
+    localStorage.clear();
+    window.location.href = "./index.html";
+}
+
 function authenticate(userName, password) {
     $.ajax
     ({
         type: "POST",
+        async: false,
         url: API_URL + LOGON_URL,
         dataType: 'json',
         data: '{"login": "'+userName+'", "password" : "'+password+'"}',
@@ -31,6 +43,7 @@ function get_offered_vehicles(service_id) {
     $.ajax
     ({
         type: "POST",
+        async: false,
         url: API_URL + OFFERED_VEH,
         dataType: 'json',
         data: '{"service_id": '+service_data().id+'}',
@@ -53,6 +66,7 @@ function get_offers() {
         type: "POST",
         url: API_URL + GET_OFFERS,
         dataType: 'json',
+        async: false,
         data: '{"service_id": '+service_data().id+'}',
         contentType: "multipart/form-data",
         success: function (data) {
@@ -75,6 +89,7 @@ function get_lists_of_vehicles_and_crashes() {
         type: "POST",
         url: API_URL + VEHS_AND_CRASHES,
         dataType: 'json',
+        async: false,
         data: '{"service_id": '+service_data().id+'}',
         contentType: "multipart/form-data",
         success: function (data) {
@@ -141,6 +156,7 @@ function create_offer(message, price, vehid) {
         type: "POST",
         url: API_URL + CREATE_OFFER,
         dataType: 'json',
+        async: false,
         data: '{"service_id": '+service_data().id+', "vehicle_id": '+vehid+', "price": '+price+', "message": "'+message+'"}',
         contentType: "multipart/form-data",
         success: function (data) {
@@ -231,12 +247,14 @@ function show_lists_of_vehicles(){
 }
 
 $(document).ready(function () {
-    fill_service_names();
-    get_offered_vehicles();
-    get_offers();
-    get_lists_of_vehicles_and_crashes();
-    show_offered_vehicles();
-    show_lists_of_vehicles();
+    if(window.location.href.indexOf("panel") >= 0) {
+        fill_service_names();
+        get_offered_vehicles();
+        get_offers();
+        get_lists_of_vehicles_and_crashes();
+        show_offered_vehicles();
+        show_lists_of_vehicles();
+    }
 });
 
 $('#login-nav').submit(function( event ) {
