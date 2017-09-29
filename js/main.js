@@ -223,7 +223,7 @@ function show_lists_of_vehicles(){
                 break;
             }
             default: {
-                adding = '<br><br>';
+                adding = '<br><span class="label label-danger" style="font-size: 12px;">имеется неисправность</span>';
                 break;
             }
         }
@@ -251,7 +251,7 @@ function show_lists_of_vehicles(){
 function init(veh_id) {
     // Создаем карту.
     var myMap = new ymaps.Map("map", {
-        center: [0.0, 0.0],
+        center: [55.744889, 37.59022],
         zoom: 10
     }, {
         searchControlProvider: 'yandex#search'
@@ -381,11 +381,6 @@ $('#popup_vehicleInfo').on('show.bs.modal', function (event) {
         '                                                        </a>' +
         '                                                    </li>' +
         '                                                    <li role="presentation">' +
-        '                                                        <a href="#curent" aria-controls="curent" role="tab" data-toggle="tab">' +
-        '                                                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> &nbsp;Информация о текущем состоянии' +
-        '                                                        </a>' +
-        '                                                    </li>' +
-        '                                                    <li role="presentation">' +
         '                                                        <a href="#locator" aria-controls="locator" role="tab" data-toggle="tab">' +
         '                                                            <span class="glyphicon glyphicon-globe" aria-hidden="true"></span> &nbsp;Локатор' +
         '                                                        </a>' +
@@ -422,30 +417,6 @@ $('#popup_vehicleInfo').on('show.bs.modal', function (event) {
         '                                                                </div>' +
         '                                                            </div>' +
         '                                                        </div>' +
-        '                                                    </div>' +
-        '                                                    <div role="tabpanel" class="tab-pane fade" id="curent">' +
-        '                                                        <button class="btn btn-default" type="button">Обновить</button><br><br>' +
-        '                                                        <table class="table table-striped">' +
-        '                                                            <th>' +
-        '                                                            <td><b>Состояние</b></td>' +
-        '                                                            </th>' +
-        '                                                            <tr>' +
-        '                                                                <td><b>Двигатель</b></td>' +
-        '                                                                <td><span class="label label-success">Запущен</span></td>' +
-        '                                                            </tr>' +
-        '                                                            <tr>' +
-        '                                                                <td><b>Температура охлаждающей жидкости</b></td>' +
-        '                                                                <td><span class="label label-warning">92 градуса</span></td>' +
-        '                                                            </tr>' +
-        '                                                            <tr>' +
-        '                                                                <td><b>Температура масла</b></td>' +
-        '                                                                <td><span class="label label-success">75 градусов</span></td>' +
-        '                                                            </tr>' +
-        '                                                            <tr>' +
-        '                                                                <td><b>Температура на впуске</b></td>' +
-        '                                                                <td><span class="label label-default"><i>нет информации</i></span></td>' +
-        '                                                            </tr>' +
-        '                                                        </table>' +
         '                                                    </div>' +
         '                                                    <div role="tabpanel" class="tab-pane fade" id="actual_crashes">' +
         '                                                        <table class="table">' +
@@ -584,7 +555,7 @@ function get_user_info(veh_id) {
 }*/
 
 function spdData(veh_id){
-    var data = get_dynamic_data(veh_id, 100, false);
+    var data = get_dynamic_data(veh_id, 10, false);
     var spdArr = [];
     for(var i=0;i<data.location.length;i++){
         spdArr.push(data.location[i].spd);
@@ -593,7 +564,7 @@ function spdData(veh_id){
 }
 
 function coordinatesData(veh_id){
-    var data = get_dynamic_data(veh_id, 100, false);
+    var data = get_dynamic_data(veh_id, 10, false);
     var crdArr = [];
     for(var i=0;i<data.location.length;i++){
         crdArr.push([data.location[i].latitude, data.location[i].longitude]);
@@ -662,7 +633,7 @@ function myOffersPopup(){
                 break;
             }
             case 2: {
-                adding = '<span class="label label-warning" style="font-size: 12px;">в ремонте</span>&nbsp;<td><span class="contact">Связаться</span></td>';
+                adding = '<span class="label label-warning" style="font-size: 12px;">в ремонте</span>&nbsp;<td><span class="contact" onclick="showUserInfo('+offers_list()[i].vehicle.id+')" style="font-size: 12px;">Связаться</span></td>';
                 break;
             }
             case 3: {
