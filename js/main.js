@@ -4,6 +4,7 @@ var OFFERED_VEH = "get_offered_vehicles";
 var VEHS_AND_CRASHES = "get_lists_of_vehicles_and_crashes";
 var CREATE_OFFER = "create_offer";
 var GET_OFFERS = "get_offers";
+var GET_USER_BY_VEH = "user_by_vehicle";
 
 function authenticate(userName, password) {
     $.ajax
@@ -65,6 +66,8 @@ function get_offers() {
         }
     })
 }
+
+
 
 function get_lists_of_vehicles_and_crashes() {
     $.ajax
@@ -214,7 +217,7 @@ function show_lists_of_vehicles(){
             '                                <p>' +
             'Год выпуска: <b>' + lists_of_vehicles_and_crashes()[i].year +
             '</b><br>VIN: <b>' + lists_of_vehicles_and_crashes()[i].VIN +
-            '</b><br>Рег. номер: <b>' + lists_of_vehicles_and_crashes()[i].number +
+            '</b><br>Рег. номер: <b style="white-space: nowrap; overflow: hidden;">' + lists_of_vehicles_and_crashes()[i].number +
             '</b></p>' +
             '                                <p>' +
            // '<a href="#" class="btn btn-primary" role="button">Ремонт</a>' +
@@ -290,7 +293,7 @@ $('#popup_vehicleInfo').on('show.bs.modal', function (event) {
             break;
         }
         case 2: {
-            adding = '<br><span class="label label-warning" style="font-size: 16px;">в ремонте</span>&nbsp;<span class="contact" style="font-size: 16px;">Связаться</span>';
+            adding = '<br><span class="label label-warning" style="font-size: 16px;">в ремонте</span>&nbsp;<span class="contact" onclick="showUserInfo('+veh.id+')" style="font-size: 16px;">Связаться</span>';
             break;
         }
         default: {
@@ -485,6 +488,50 @@ $('#popup_vehicleInfo').on('show.bs.modal', function (event) {
         '                            </div>');
 });
 
+function get_user_info(veh_id) {
+    $.ajax
+    ({
+        type: "POST",
+        url: API_URL + GET_USER_BY_VEH,
+        dataType: 'json',
+        async: false,
+        data: '{"vehicle_id": '+veh_id+'}',
+        contentType: "multipart/form-data",
+        success: function (data) {
+            if(data.code == 200) {
+                tmpData = data;
+                console.log(data)
+            }else if(data.code == 404){
+                alert("Пусто!");
+            }else{
+                alert("Неизвестная ошибка!");
+            }
+        }
+    });
+    return tmpData;
+}
+
+
+function showUserInfo(veh_id){
+    var user = get_user_info(veh_id);
+    $('#popup_UserInfo > div > div').html('<div class="modal-header">' +
+        '        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+        '        <h4 class="modal-title" id="myModalLabel">Контактные данные</h4>' +
+        '      </div>' +
+        '      <div class="modal-body">' +
+        '         <div class="row">' +
+        '          <div class="col-lg-4 col-lg-offset-1"><b>Фамилия</b></div><div class="col-lg-7">'+user.lastname+'</div>'+
+        '          <div class="col-lg-4 col-lg-offset-1"><b>Имя</b></div><div class="col-lg-7">'+user.firstname+'</div>'+
+        '          <div class="col-lg-4 col-lg-offset-1"><b>E-Mail</b></div><div class="col-lg-7">'+user.email+'</div>'+
+        '          <div class="col-lg-4 col-lg-offset-1"><b>Телефон</b></div><div class="col-lg-7">'+user.phone+'</div>'+
+        '         </div>' +
+        '      </div>' +
+        '      <div class="modal-footer">' +
+        '        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>' +
+        '      </div>');
+    $('#popup_vehicleInfo').modal('hide');
+    $('#popup_UserInfo').modal('show');
+}
 
 
 
