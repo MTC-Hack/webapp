@@ -161,3 +161,9 @@
     line-height: 2em;
     padding: 5px;
 }
+#map {
+    width: 700px;
+    height: 600px;
+    padding: 0;
+    margin: 0;
+}

@@ -5,6 +5,7 @@ var VEHS_AND_CRASHES = "get_lists_of_vehicles_and_crashes";
 var CREATE_OFFER = "create_offer";
 var GET_OFFERS = "get_offers";
 var GET_USER_BY_VEH = "user_by_vehicle";
+var DYNAMIC_DATA = "get_dynamic_data";
 
 if(window.location.href.indexOf("panel") >= 0){
     if(!localStorage.getItem('data')){
@@ -247,6 +248,44 @@ function show_lists_of_vehicles(){
     $('#lists_of_vehicles').html(tmpHTML);
 }
 
+function init(veh_id) {
+    // Создаем карту.
+    var myMap = new ymaps.Map("map", {
+        center: [0.0, 0.0],
+        zoom: 10
+    }, {
+        searchControlProvider: 'yandex#search'
+    });
+
+    // Создаем ломаную, используя класс GeoObject.
+    var myGeoObject = new ymaps.GeoObject({
+        // Описываем геометрию геообъекта.
+        geometry: {
+            // Тип геометрии - "Ломаная линия".
+            type: "LineString",
+            // Указываем координаты вершин ломаной.
+            coordinates: coordinatesData(veh_id)
+        },
+        // Описываем свойства геообъекта.
+        properties:{
+            // Содержимое хинта.
+            hintContent: "Я геообъект",
+            // Содержимое балуна.
+            balloonContent: "Меня можно перетащить"
+        }
+    }, {
+        // Задаем опции геообъекта.
+        // Включаем возможность перетаскивания ломаной.
+        draggable: true,
+        // Цвет линии.
+        strokeColor: "#000000",
+        // Ширина линии.
+        strokeWidth: 4
+    });
+    myMap.geoObjects
+        .add(myGeoObject);
+}
+
 $(document).ready(function () {
     if(window.location.href.indexOf("panel") >= 0) {
         fill_service_names();
@@ -385,6 +424,7 @@ $('#popup_vehicleInfo').on('show.bs.modal', function (event) {
         '                                                        </div>' +
         '                                                    </div>' +
         '                                                    <div role="tabpanel" class="tab-pane fade" id="curent">' +
+        '                                                        <button class="btn btn-default" type="button">Обновить</button><br><br>' +
         '                                                        <table class="table table-striped">' +
         '                                                            <th>' +
         '                                                            <td><b>Состояние</b></td>' +
@@ -424,7 +464,8 @@ $('#popup_vehicleInfo').on('show.bs.modal', function (event) {
         '                                                    <div role="tabpanel" class="tab-pane fade" id="locator">' +
         '                                                        <div class="row">' +
         '                                                            <div class="col-lg-8">' +
-        '                                                                <iframe src="https://api-maps.yandex.ru/frame/v1/-/CBQE48AzOB" width="100%" height="400" frameborder="0"></iframe>' +
+        '                                                               <div id="map"></div>' +
+      //  '                                                                <iframe src="https://api-maps.yandex.ru/frame/v1/-/CBQE48AzOB" width="100%" height="400" frameborder="0"></iframe>' +
         '                                                            </div>' +
         '                                                            <div class="col-lg-4">' +
         '                                                                <div class="h3">Координаты</div>' +
@@ -450,10 +491,10 @@ $('#popup_vehicleInfo').on('show.bs.modal', function (event) {
         '                                                                    var myChart = new Chart(ctx, {' +
         '                                                                        type: \'line\',' +
         '                                                                        data: {' +
-        '                                                                            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],' +
+        '                                                                            labels: [1,2,3,4,5,6,7,8,9,10],' +
         '                                                                            datasets: [{' +
-        '                                                                                label: \'Пробег\',' +
-        '                                                                                data: [12, 126, 85, 0, 5, 956],' +
+        '                                                                                label: \'Скорость\',' +
+        '                                                                                data: spdData('+veh.id+'),' +
         '                                                                                backgroundColor: [' +
         '                                                                                    \'rgba(255, 99, 132, 0.2)\'' +
         '                                                                                ],' +
@@ -472,7 +513,7 @@ $('#popup_vehicleInfo').on('show.bs.modal', function (event) {
         '                                                                            scales: {' +
         '                                                                                yAxes: [{' +
         '                                                                                    ticks: {' +
-        '                                                                                        beginAtZero: true' +
+        '                                                                                        beginAtZero: false' +
         '                                                                                    }' +
         '                                                                                }]' +
         '                                                                            }' +
@@ -505,6 +546,8 @@ $('#popup_vehicleInfo').on('show.bs.modal', function (event) {
         '                                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>' +
         '' +
         '                            </div>');
+
+    ymaps.ready(init(veh.id));
 });
 
 function get_user_info(veh_id) {
@@ -528,6 +571,57 @@ function get_user_info(veh_id) {
         }
     });
     return tmpData;
+}
+
+/*function fuelData(veh_id){
+    var data = get_dynamic_data(veh_id, 10, false);
+    var fuelArr = [];
+    for(var i=0;i<data.fuel.length;i++){
+        fuelArr.push(data.fuel[i].fuel*10000);
+    }
+    console.log(fuelArr);
+    return fuelArr;
+}*/
+
+function spdData(veh_id){
+    var data = get_dynamic_data(veh_id, 100, false);
+    var spdArr = [];
+    for(var i=0;i<data.location.length;i++){
+        spdArr.push(data.location[i].spd);
+    }
+    return spdArr;
+}
+
+function coordinatesData(veh_id){
+    var data = get_dynamic_data(veh_id, 100, false);
+    var crdArr = [];
+    for(var i=0;i<data.location.length;i++){
+        crdArr.push([data.location[i].latitude, data.location[i].longitude]);
+    }
+    return crdArr;
+}
+
+
+function get_dynamic_data(veh_id, lim, async) {
+    $.ajax
+    ({
+        type: "POST",
+        url: API_URL + DYNAMIC_DATA,
+        dataType: 'json',
+        async: async,
+        data: '{"vehicle_id": '+veh_id+', "limit": '+lim+'}',
+        contentType: "multipart/form-data",
+        success: function (data) {
+            if(data.code == 200) {
+                curDynData = data;
+            }else if(data.code == 404){
+                alert("Пусто!");
+            }else{
+                alert("Неизвестная ошибка!");
+            }
+        }
+    });
+    return curDynData;
 }
 
 
