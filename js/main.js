@@ -467,19 +467,23 @@ function myOffersPopup(){
     for(var i=0; i < offers_list().length; i++){
         switch(offers_list()[i].status){
             case 0: {
-                adding = '<span class="label label-info" style="font-size: 12px;">на рассмотрении</span>';
+                adding = '<span class="label label-info" style="font-size: 12px;">на рассмотрении</span><td></td>';
                 break;
             }
             case 1: {
-                adding = '<span class="label label-success" style="font-size: 12px;">согласовано</span>';
+                adding = '<span class="label label-success" style="font-size: 12px;">согласовано</span><td></td>';
                 break;
             }
             case 2: {
-                adding = '<span class="label label-warning" style="font-size: 12px;">в ремонте</span>';
+                adding = '<span class="label label-warning" style="font-size: 12px;">в ремонте</span>&nbsp;<td><span class="contact">Связаться</span></td>';
                 break;
             }
             case 3: {
-                adding = '<span class="label label-default" style="font-size: 12px;">завершено</span>';
+                adding = '<span class="label label-default" style="font-size: 12px;">завершено</span><td></td>';
+                break;
+            }
+            case -1: {
+                adding = '<span class="label label-danger" style="font-size: 12px;">отклонена</span><td></td>';
                 break;
             }
         }
@@ -492,7 +496,7 @@ function myOffersPopup(){
         '      <div class="modal-body">' +
         '           <table class="table">' +
         '               <tr>' +
-        '                  <td><b>ID</b></td><td><b>Дата</b></td><td><b>Автомобиль</b></td><td><b>Сообщение</b></td><td><b>Цена</b></td><td><b>Статус</b></td>'+
+        '                  <td><b>ID</b></td><td><b>Дата</b></td><td><b>Автомобиль</b></td><td><b>Сообщение</b></td><td><b>Цена</b></td><td><b>Статус</b></td><td></td>'+
         '               </tr>' + tmpHTML +
         '           </table>' +
         '      </div>' +

@@ -148,3 +148,16 @@
     color: #000e76;
     text-decoration: underline;
 }
+
+.contact:hover {
+    cursor: pointer;
+    color: #000e76;
+    border-color: #000;
+}
+
+.contact{
+    border: 1px dashed #333;
+    border-radius: 5px;
+    line-height: 2em;
+    padding: 5px;
+}
