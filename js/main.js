@@ -197,7 +197,7 @@ function show_lists_of_vehicles(){
         }
         var addedHtml = '';
         if(isMyCar){
-            addedHtml = '<br><span class="label label-success" style="font-size: 12px;">в ремонте</span>';
+            addedHtml = '<br><span class="label label-warning" style="font-size: 12px;">в ремонте</span>';
         }else{
             addedHtml = '<br><br>';
         }
@@ -463,8 +463,27 @@ $('#popup_vehicleInfo').on('show.bs.modal', function (event) {
 
 function myOffersPopup(){
     var tmpHTML = '';
+    var adding = '';
     for(var i=0; i < offers_list().length; i++){
-        tmpHTML += '<tr><td>'+offers_list()[i].id+'</td><td>'+offers_list()[i].date+'</td><td><b>'+offers_list()[i].vehicle+'</b></td><td>'+offers_list()[i].message+'</td><td>'+offers_list()[i].price+' руб.</td><td>'+offers_list()[i].status+'</td></tr>';
+        switch(offers_list()[i].status){
+            case 0: {
+                adding = '<span class="label label-info" style="font-size: 12px;">на рассмотрении</span>';
+                break;
+            }
+            case 1: {
+                adding = '<span class="label label-success" style="font-size: 12px;">согласовано</span>';
+                break;
+            }
+            case 2: {
+                adding = '<span class="label label-warning" style="font-size: 12px;">в ремонте</span>';
+                break;
+            }
+            case 3: {
+                adding = '<span class="label label-default" style="font-size: 12px;">завершено</span>';
+                break;
+            }
+        }
+        tmpHTML += '<tr><td>'+offers_list()[i].id+'</td><td>'+offers_list()[i].date+'</td><td><b>'+offers_list()[i].vehicle.brand + ' ' + offers_list()[i].vehicle.model+'</b></td><td>'+offers_list()[i].message+'</td><td>'+offers_list()[i].price+' руб.</td><td>'+adding+'</td></tr>';
     }
     $('#popup_myOffers > div > div').html('<div class="modal-header">' +
         '        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
