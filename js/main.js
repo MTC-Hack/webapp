@@ -148,6 +148,7 @@ function sendOffer(vehid){
     amount = $('#popup_vehicleRepairOffer #amount').val();
     create_offer(offer_text, amount, vehid);
     $('#popup_vehicleRepairOffer').modal('hide');
+    window.location.reload();
 }
 
 function create_offer(message, price, vehid) {
