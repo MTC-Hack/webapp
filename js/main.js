@@ -3,6 +3,7 @@ var LOGON_URL = "service_logon";
 var OFFERED_VEH = "get_offered_vehicles";
 var VEHS_AND_CRASHES = "get_lists_of_vehicles_and_crashes";
 var CREATE_OFFER = "create_offer";
+var GET_OFFERS = "get_offers";
 
 function authenticate(userName, password) {
     $.ajax
@@ -45,6 +46,26 @@ function get_offered_vehicles(service_id) {
     })
 }
 
+function get_offers() {
+    $.ajax
+    ({
+        type: "POST",
+        url: API_URL + GET_OFFERS,
+        dataType: 'json',
+        data: '{"service_id": '+service_data().id+'}',
+        contentType: "multipart/form-data",
+        success: function (data) {
+            if(data.code == 200) {
+                localStorage.setItem('get_offers', JSON.stringify(data.offers));
+            }else if(data.code == 404){
+                alert("Пусто!");
+            }else{
+                alert("Неизвестная ошибка!");
+            }
+        }
+    })
+}
+
 function get_lists_of_vehicles_and_crashes() {
     $.ajax
     ({
@@ -64,7 +85,7 @@ function get_lists_of_vehicles_and_crashes() {
     })
 }
 
-function sendOffer(vehid) {
+function popupSendOffer(vehid) {
     var cur = null;
     for(var i=0;i<lists_of_vehicles_and_crashes().length;i++){
         if(lists_of_vehicles_and_crashes()[i].id == vehid){
@@ -78,29 +99,57 @@ function sendOffer(vehid) {
         '        <h4 class="modal-title" id="myModalLabel">Предложение о ремонте</h4>' +
         '      </div>' +
         '      <div class="modal-body">' +
-        '<form class="form-horizontal">\n' +
-        '  <div class="form-group">\n' +
-        '    <label for="offer-text" class="col-sm-2 control-label">Текст предложения</label>\n' +
-        '    <div class="col-sm-10">\n' +
+        '<form class="form-horizontal">' +
+        '  <div class="form-group">' +
+        '    <label for="offer-text" class="col-sm-2 control-label">Текст предложения</label>' +
+        '    <div class="col-sm-10">' +
         '      <textarea class="form-control" id="offer-text" rows="4"></textarea>' +
-        '    </div>\n' +
-        '  </div>\n' +
-        '  <div class="form-group">\n' +
-        '    <label for="amount" class="col-sm-2 control-label">Стоимость</label>\n' +
-        '    <div class="col-sm-10">\n' +
-        '      <div class="input-group"><input type="text" class="form-control" id="amount" placeholder="Сумма в рублях"><div class="input-group-addon">руб</div></div>\n' +
-        '    </div>\n' +
-        '  </div>\n' +
+        '    </div>' +
+        '  </div>' +
+        '  <div class="form-group">' +
+        '    <label for="amount" class="col-sm-2 control-label">Стоимость</label>' +
+        '    <div class="col-sm-10">' +
+        '      <div class="input-group"><input type="text" class="form-control" id="amount" placeholder="Сумма в рублях"><div class="input-group-addon">руб</div></div>' +
+        '    </div>' +
+        '  </div>' +
         '</form>' +
         '      </div>' +
         '      <div class="modal-footer">' +
 
-        '        <button type="button" class="btn btn-primary">Отправить предложение</button>' +
+        '        <button type="button" class="btn btn-primary" onclick="sendOffer('+vehid+')">Отправить предложение</button>' +
         '        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>' +
 
         '      </div>');
     $('#popup_vehicleRepairOffer').modal('show');
-    console.log(veh);
+}
+
+function sendOffer(vehid){
+    var offer_text, amount;
+    offer_text = $('#popup_vehicleRepairOffer #offer-text').val();
+    amount = $('#popup_vehicleRepairOffer #amount').val();
+    create_offer(offer_text, amount, vehid);
+    $('#popup_vehicleRepairOffer').modal('hide');
+}
+
+function create_offer(message, price, vehid) {
+    $.ajax
+    ({
+        type: "POST",
+        url: API_URL + CREATE_OFFER,
+        dataType: 'json',
+        data: '{"service_id": '+service_data().id+', "vehicle_id": '+vehid+', "price": '+price+', "message": "'+message+'"}',
+        contentType: "multipart/form-data",
+        success: function (data) {
+            if(data.code == 200) {
+                /*localStorage.setItem('lists_of_vehicles_and_crashes', JSON.stringify(data.data));*/
+                alert('Предложение успешно создано!')
+            }else if(data.code == 404){
+                alert("Пусто!");
+            }else{
+                alert("Неизвестная ошибка!");
+            }
+        }
+    })
 }
 
 function offered_vehicles(){
@@ -115,6 +164,10 @@ function service_data(){
     return JSON.parse(localStorage.getItem("data"));
 }
 
+function offers_list(){
+    return JSON.parse(localStorage.getItem("get_offers"));
+}
+
 function fill_service_names(){
     $(".forServiceName").each(function () {
         $(this).text(service_data().service_name);
@@ -124,7 +177,7 @@ function fill_service_names(){
 function show_offered_vehicles(){
     var tmpHTML = '';
     for(var i=0; i < offered_vehicles().length; i++ ){
-        tmpHTML+='<li class="list-group-item">' +
+        tmpHTML+='<li class="list-group-item" data-toggle="modal" data-target="#popup_vehicleInfo" data-id="'+offered_vehicles()[i].vehicle.id+'">' +
             '<span class="badge">' + offered_vehicles()[i].count_crashes + '</span>' + offered_vehicles()[i].vehicle.brand + ' ' + offered_vehicles()[i].vehicle.model +
             '</li>';
     }
@@ -136,14 +189,12 @@ function show_lists_of_vehicles(){
     for(var i=0;i<lists_of_vehicles_and_crashes().length;i++){
         var isMyCar = false;
         for(var j=0; j < offered_vehicles().length; j++ ) {
-            console.log(lists_of_vehicles_and_crashes()[i].id, offered_vehicles()[j].vehicle.id);
             if (lists_of_vehicles_and_crashes()[i].id === offered_vehicles()[j].vehicle.id) {
 
                 isMyCar = true;
                 break;
             }
         }
-        console.log(isMyCar)
         var addedHtml = '';
         if(isMyCar){
             addedHtml = '<br><span class="label label-success" style="font-size: 12px;">в ремонте</span>';
@@ -174,10 +225,10 @@ function show_lists_of_vehicles(){
 $(document).ready(function () {
     fill_service_names();
     get_offered_vehicles();
+    get_offers();
     get_lists_of_vehicles_and_crashes();
     show_offered_vehicles();
     show_lists_of_vehicles();
-    console.log(lists_of_vehicles_and_crashes());
 });
 
 $('#login-nav').submit(function( event ) {
@@ -401,12 +452,35 @@ $('#popup_vehicleInfo').on('show.bs.modal', function (event) {
         '                                                </div></div>' +
         '                            <div class="modal-footer">' +
         '' +
-        '                                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="sendOffer('+veh.id+')">Оставить предложение о ремонте</button>' +
+        '                                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="popupSendOffer('+veh.id+')">Оставить предложение о ремонте</button>' +
         '                                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>' +
         '' +
         '                            </div>');
-    console.log(recipient_id);
 });
 
+
+
+
+function myOffersPopup(){
+    var tmpHTML = '';
+    for(var i=0; i < offers_list().length; i++){
+        tmpHTML += '<tr><td>'+offers_list()[i].id+'</td><td>'+offers_list()[i].date+'</td><td><b>'+offers_list()[i].vehicle+'</b></td><td>'+offers_list()[i].message+'</td><td>'+offers_list()[i].price+' руб.</td><td>'+offers_list()[i].status+'</td></tr>';
+    }
+    $('#popup_myOffers > div > div').html('<div class="modal-header">' +
+        '        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+        '        <h4 class="modal-title" id="myModalLabel">Мои предложения о ремонте</h4>' +
+        '      </div>' +
+        '      <div class="modal-body">' +
+        '           <table class="table">' +
+        '               <tr>' +
+        '                  <td><b>ID</b></td><td><b>Дата</b></td><td><b>Автомобиль</b></td><td><b>Сообщение</b></td><td><b>Цена</b></td><td><b>Статус</b></td>'+
+        '               </tr>' + tmpHTML +
+        '           </table>' +
+        '      </div>' +
+        '      <div class="modal-footer">' +
+        '        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>' +
+        '      </div>');
+    $('#popup_myOffers').modal('show');
+}
 
 

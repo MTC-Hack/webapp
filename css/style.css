@@ -142,3 +142,9 @@
         border-top: 0 none;
     }
 }
+
+#own-cars-list:hover {
+    cursor: pointer;
+    color: #000e76;
+    text-decoration: underline;
+}
